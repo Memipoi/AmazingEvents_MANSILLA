@@ -1,17 +1,31 @@
+import {filtersNameCheck, createCheckBoxes, createCards } from './functions.js'
 
-function filterUncomingEvents(){
+let eventos
+async function getEvent(){
+    await fetch('../amazing.json')
+    .then(response => response.json())
+        .then(data=>{
+            eventos = filterUncomingEvents(data)
+            console.log(eventos)
+            createCards(eventos);
+            createCheckBoxes(eventos); 
+    }).catch(err => console.error(err))
+}
+getEvent()
+
+
+function filterUncomingEvents(data){
   let uncomingEvents=[];
-  for(uncomingEvent of data.events){
+  for(let uncomingEvent of data.events){
     if(uncomingEvent.date>data.currentDate){
       uncomingEvents.push(uncomingEvent);
   }
 }
 return uncomingEvents;
 }
+const input = document.getElementById("search")
+const contenedorCheck = document.getElementById("checkContainer")
 
-let uncomingEvents= filterUncomingEvents()
+input.addEventListener('input',() => filtersNameCheck(eventos))
+contenedorCheck.addEventListener('change',() => filtersNameCheck(eventos))
 
-input.addEventListener('input',() => filtersNameCheck(uncomingEvents))
-contenedorCheck.addEventListener('change',() => filtersNameCheck(uncomingEvents))
-createCards(uncomingEvents);
-createCheckBoxes(uncomingEvents);

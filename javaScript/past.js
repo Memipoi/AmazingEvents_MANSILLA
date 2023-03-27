@@ -1,7 +1,22 @@
+import {filtersNameCheck, createCheckBoxes, createCards } from './functions.js'
 
-function filterPastEvents(){
+let eventos
+async function getEvent(){
+    await fetch('../amazing.json')
+    .then(response => response.json())
+        .then(data=>{
+            eventos = filterPastEvents(data)
+            console.log(eventos)
+            createCards(eventos);
+            createCheckBoxes(eventos); 
+    }).catch(err => console.error(err))
+}
+getEvent()
+
+
+function filterPastEvents(data){
   let pastEvents=[];
-  for(pastEvent of data.events){
+  for(let pastEvent of data.events){
     if(pastEvent.date<data.currentDate){
       pastEvents.push(pastEvent);
   }
@@ -9,10 +24,10 @@ function filterPastEvents(){
 return pastEvents;
 }
 
-let pastEvents= filterPastEvents();
+const input = document.getElementById("search")
+const contenedorCheck = document.getElementById("checkContainer")
 
-input.addEventListener('input',() => filtersNameCheck(pastEvents))
-contenedorCheck.addEventListener('change',() => filtersNameCheck(pastEvents))
-createCards(pastEvents);
-createCheckBoxes(pastEvents);
+input.addEventListener('input',() => filtersNameCheck(eventos))
+contenedorCheck.addEventListener('change',() => filtersNameCheck(eventos))
+
 

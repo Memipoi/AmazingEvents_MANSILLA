@@ -1,9 +1,8 @@
-
 const contenedor = document.getElementById('cardsConteiner')
 const contenedorCheck = document.getElementById('checkContainer')
 const input = document.querySelector('input')
 
-function filtersNameCheck(events){
+export function filtersNameCheck(events){
     let firstFilter = filterText(events, input.value)
     let secondFilter = filterCheckBox(firstFilter)
     createCards(secondFilter)
@@ -13,7 +12,7 @@ function filtersNameCheck(events){
 //createCards(data.events)
 //createCheckBoxes(data.events)
 
-function createCheckBoxes(array){
+export function createCheckBoxes(array){
     let arraycategory = array.map(e => e.category)
     let setCategory = new Set(arraycategory)
     let arrayChecks = Array.from(setCategory)
@@ -29,12 +28,12 @@ function createCheckBoxes(array){
     contenedorCheck.innerHTML = checkboxes
 }
 
-function createCards(array){
+export function createCards(array){
     var fragment = document.createDocumentFragment();
     contenedor.innerHTML = ""
     if(array.length == 0){
         const element = document.createElement("div")
-        element.innerHTML =`<h2 class="display-4 fw-bolder" style="color:white;" >No hay coincidencias</h2>`
+        element.innerHTML =`<h2 class="display-4" style="color:white;" >No results found</h2>`
         fragment.appendChild(element) 
         contenedor.appendChild(fragment)
         return
@@ -68,7 +67,7 @@ function filterText(array,text){
     return arrayFilter
 }
 
-function filterCheckBox(array){
+ function filterCheckBox(array){
     let checkboxes = document.querySelectorAll("input[type='checkbox']")
     let arrayChecks = Array.from(checkboxes)
     let arrayChecksChecked = arrayChecks.filter(check => check.checked)
